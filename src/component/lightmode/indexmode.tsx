@@ -5,62 +5,60 @@ import {MoonOutlined} from "@ant-design/icons"
 import {SunOutlined} from "@ant-design/icons"
 import {TwitterOutlined} from "@ant-design/icons"
 import {ReconciliationOutlined} from "@ant-design/icons"
-import github from "../lightmode/assents/github.webp"
-import icon from "../lightmode/assents/icon-company.svg"
+import github from "../lightmode/assents/Snwebgit.png"
 import "../lightmode/indexmode.css"
 import "../lightmode/dark-mode.css"
 import { useState,useEffect } from "react"
-import datas from "../lightmode/assents/datas.json";
+// import datas from "../lightmode/assents/datas.json";
+
+const datas = require("../lightmode/assents/datas.json")
 
 
- interface DataItem {
-    id: number;
-    firstname: string;
-    lastname: string,
-    information:string
-    image: string,
-    flower: number,
-    flowing:number,
-    repos:number,
-    city: string
-  }
+interface Myobject {
+  id: number;
+  firstname: string;
+  lastname: string;
+  information:string,
+  subinf:string,
+  image:string,
+  flower:string,
+  flowing:string,
+  repos:string,
+  city:string
 
+}
 
 export default function Whitemode(){
 
-  const [dataresult,setdataresult]=useState(false)
+  const [dataresult,setdataresult]=useState(true)
   const [nodaresult,setnodatresult]=useState(false)
-  const [staticresult,setstaticresult]=useState(true)
-   
-
-    const [searchTerm, setSearchTerm] = useState<string>('');
-    // const [searchResults, setSearchResults] = useState<DataItem[]>([]);
-
-// useEffect(() => {
-//     fetch('../lightmode/assents/datas.json')
-//       .then(response => response.json())
-//       .then(data => {
-//         const parsedData: DataItem[] = data;
-//         setSearchResults(parsedData);
-//       })
-//       .catch(error => console.error('Error loading JSON:', error));
-// }, []);
-
-// const performSearch = (term: string) => {
-//     const results = searchResults.filter(item =>
-//         item.firstname.toLowerCase().includes(term.toLowerCase())
-//     );
-//     setSearchResults(results);
-// };
-
-const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    // performSearch(event.target.value);
-  };
+  // const [staticresult,setstaticresult]=useState(false)
 
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
+  useEffect(() => {
+    if (searchTerm === "") {
+      setFilteredData(datas);
+    } else {
+      const results = datas.filter((obj:Myobject) =>
+        obj.firstname.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredData(results);
+    }
+  }, [searchTerm]);
+  
+   const notanydatas = () =>{
+      setdataresult(false)
+      setnodatresult(true)
+   }
 
+   const backanydata = () =>{
+         setdataresult(true)
+         setnodatresult(false)
+   }
+ 
 
     const [white,setwhite]=useState(true)
     const [worker,setwork]=useState(false)
@@ -79,7 +77,7 @@ const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       return (
         <>
 
-        {staticresult && (
+        {/* {staticresult && (
            <div className={white===true?"inter-cardwite":"inter-card"}>
            <div className="heard-pathwite ">
              <p className={white===true?"witeb":"witebp"}>divfinder</p>
@@ -95,7 +93,7 @@ const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               </div>
            </div>
            <form action="" className={white===true?"searchwite":"search"}>
-              <label htmlFor="" className={white===true?"witec":""}><ZoomInOutlined className="search-icon"/><input type="text" value={searchTerm} onChange={handleInputChange} className={white===true?"wited":""}  placeholder="Search Github username"/></label>
+              <label htmlFor="" className={white===true?"witec":""}><ZoomInOutlined className="search-icon"/><input type="text"  className={white===true?"wited":""}  placeholder="Search Github username"/></label>
                <button>Search</button>
            </form>
            
@@ -132,7 +130,7 @@ const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               </div>
           </div>
         </div>
-        )} 
+        )}  */}
         
 
         
@@ -153,10 +151,10 @@ const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                </div>
             </div>
             <form action="" className={white===true?"searchwite":"search"}>
-               <label htmlFor="" className={white===true?"witec":""}><ZoomInOutlined className="search-icon"/><input type="text" value={searchTerm} onChange={handleInputChange} className={white===true?"wited":""}  placeholder="Search Github username"/></label>
+               <label htmlFor="" className={white===true?"witec":""}><ZoomInOutlined className="search-icon"/><input type="text"  className={white===true?"wited":""}  placeholder="Search Github username"/></label>
                 <div className="noyresult">
                   <p>No results</p>
-                <button>Search</button>
+                <button onChange={backanydata}>Search</button>
                 </div>
             </form>
             
@@ -212,63 +210,52 @@ const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               </div>
            </div>
            <form action="" className={white===true?"searchwite":"search"}>
-              <label htmlFor="" className={white===true?"witec":""}><ZoomInOutlined className="search-icon"/><input type="text" value={searchTerm} onChange={handleInputChange} className={white===true?"wited":""}  placeholder="Search Github username"/></label>
+              <label htmlFor="" className={white===true?"witec":""}><ZoomInOutlined className="search-icon"/><input type="text"  
+              onChange={(event)=>{setSearchTerm(event.target.value)}} className={white===true?"wited":""}
+                   placeholder="Search Github username"/></label>
                <div className="noyresult">
-               <button>Search</button>
+               <button onChange={notanydatas}>Search</button>
                </div>
            </form>
-           
-          <div className={white===true?"content-cardwite":"content-card"}>
-           {datas.filter((val)=>{
-            if(searchTerm==""){
-                return val
-            }else{
-                if(val.firstname.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()))
-                return val
-                if(!val){
-                    setnodatresult(true)
-                    setstaticresult(false)
-                    setdataresult(false)
-                }else{
-                    setnodatresult(false)
-                    setstaticresult(false)
-                    setdataresult(true)
-                }
-            }
-           }).slice(-1).map((val,key) =>(
-              <div key={key} className={white===true?"contentwite":"content"}>
-              <div className="contin-image">
-              <img src={github} alt="github" />
-              <div className={white===true?"firstdivwite":"firstdiv"}>
-              <div className={white===true?"leftwite":"left"}>
-                  <h1 className={white===true?"octoswite":"octos"}>{val.firstname}</h1>
-                  <p className="linkss">{val.lastname}</p>
-                  </div>
-                  <div className={white===true?"rigthwite":"rigthh"}>Joined 25 Jan 2011</div>
-                 </div>
-              </div>
-              <span className={white===true?"witee":"witeespan"}>{val.information} </span>
-              <span className={white===true?"witee":"witeespan"}></span>
-             <div className={white===true?"numberwite":"number"}>
-                 <li className={white===true?"witef":""}>Repos<p>{val.repos}</p></li>
-                 <li className={white===true?"witef":""}>Followers<p>{val.flower}</p></li>
-                 <li className={white===true?"witef":""}>Followings<p>{val.flowing}</p></li>
-             </div>
-             <div className="local-link">
-                 <div className={white===true?"topwite":"top"}>
-                     <p className={white===true?"lineewite":"linee"}><EnvironmentOutlined /><span className={white===true?"lineewite":""}>{val.city}</span></p>
-                     <p className={white===true?"lineewite":"linee"}><TwitterOutlined /><span className={white===true?"lineewite":""}>Not available</span></p>
-                 </div>
-                 <div className={white===true?"bottomwite":"bottom"}>
-                 <p className={white===true?"lineewite":"linee"}><LinkOutlined /><span className={white===true?"lineewite":""}>https://gitihub.blog</span></p>
-                 <p className={white===true?"lineewite":"linee"}><span className={white===true?"lineewite":""}>agithub</span></p>
-                 </div>
-             </div>
+        
+                <div className={white===true?"content-cardwite":"content-card"}>
+                {filteredData.slice(-1).map((val:Myobject) => (
+                          <div  className={white===true?"contentwite":"content"}>
+                          <div className="contin-image">
+                          <img src={github} alt="github" />
+                          <div className={white===true?"firstdivwite":"firstdiv"}>
+                          <div className={white===true?"leftwite":"left"}>
+                              <h1 className={white===true?"octoswite":"octos"}>{val.firstname}</h1>
+                              <p className="linkss">{val.lastname}</p> 
+                              </div>
+                              <div className={white===true?"rigthwite":"rigthh"}>Joined 25 Jan 2011</div>
+                             </div>
+                          </div>
+                          <span className={white===true?"witee":"witeespan"}>{val.information}</span>
+                          <span className={white===true?"witee":"witeespan"}>{val.subinf}</span>
+                         <div className={white===true?"numberwite":"number"}>
+                             <li className={white===true?"witef":""}>Repos<p>{val.repos}</p></li>
+                             <li className={white===true?"witef":""}>Followers<p>{val.flower}</p></li>
+                             <li className={white===true?"witef":""}>Followings<p>{val.flowing}</p></li>
+                         </div>
+                         <div className="local-link">
+                             <div className={white===true?"topwite":"top"}>
+                                 <p className={white===true?"lineewite":"linee"}><EnvironmentOutlined /><span className={white===true?"lineewite":""}>{val.city}</span></p>
+                                 <p className={white===true?"lineewite":"linee"}><TwitterOutlined /><span className={white===true?"lineewite":""}>Not available</span></p>
+                             </div>
+                             <div className={white===true?"bottomwite":"bottom"}>
+                             <p className={white===true?"lineewite":"linee"}><LinkOutlined /><span className={white===true?"lineewite":""}>https://gitihub.blog</span></p>
+                             <p className={white===true?"lineewite":"linee"}><span className={white===true?"lineewite":""}>agithub</span></p>
+                             </div>
+                         </div>
+                        
+                     </div> 
+                ))}
             
-         </div>
-           ))}
-              
-          </div>
+                
+            </div>
+          
+          
         </div> 
         )}
                             
